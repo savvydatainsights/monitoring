@@ -16,4 +16,4 @@ In order to set the monitoring environment up, follow the steps below:
 2. Put in a file called *basic_auth_password* the same password used previously. Prometheus will use this file later on to connect to cAdvisor.
 3. Finally, turn everything on through running: `docker-compose up -d`
 
-Alternativelly to manually following the mentioned steps, you can just execute `ansible playbooks/setup.yml`. You will be prompted to type the password, and then all the steps will be performed automatically.
+Alternativelly to manually following the mentioned steps, you can just execute `ansible-playbook playbooks/setup.yml`. You will be prompted to type the password, and then all the steps will be performed automatically.
