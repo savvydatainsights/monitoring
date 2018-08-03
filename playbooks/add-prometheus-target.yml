@@ -30,3 +30,9 @@
         path: "{{ prom_conf_file }}"
         marker: "# {mark} {{ job_name }} configuration"
         block: "{{ lookup('template', 'target-conf-template.j2') }}"
+      register: blockinfile_result
+    - name: Reload Prometheus
+      uri:
+        url: "{{ prom_url }}/-/reload"
+        method: POST
+      when: blockinfile_result.changed
