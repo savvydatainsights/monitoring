@@ -1,5 +1,7 @@
 # SDI Monitoring
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build status](https://travis-ci.org/savvydatainsights/monitoring.svg?branch=master)](https://travis-ci.org/savvydatainsights/monitoring)
+
 Project for developing the SDI monitoring solution, consisted basically in 3 components:
 
 - [Prometheus](https://prometheus.io) - Monitoring system and time series database;
