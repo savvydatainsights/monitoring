@@ -38,6 +38,7 @@ services:
     restart: always
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
     ports:
       - 3000:3000
     links:
