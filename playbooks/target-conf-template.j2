@@ -1,0 +1,11 @@
+  - job_name: '{{ job_name }}'
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+    - targets: ['{{ target }}']
+
+    basic_auth:
+      username: prometheus
+      password_file: /etc/prometheus/basic_auth_password

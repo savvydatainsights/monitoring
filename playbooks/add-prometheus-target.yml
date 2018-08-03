@@ -5,6 +5,8 @@
   vars:
     - prom_conf_file: "{{ prom_conf_file_arg | default('prometheus.yml' | realpath) }}"
     - prom_url: "{{ prom_url_arg | default('http://localhost:9090') }}"
+    - job_name: "{{ job_name_arg | default('localhost') }}"
+    - target: "{{ target_arg | default('cadvisor:8080') }}"
   tasks:
     - name: Check if the Prometheus configuration file exists
       stat:
@@ -23,3 +25,8 @@
       assert:
         that: prom_url_check.status == 200
         msg: "Unfortunately Prometheus is unreachable"
+    - name: Add the target configuration
+      blockinfile:
+        path: "{{ prom_conf_file }}"
+        marker: "# {mark} {{ job_name }} configuration"
+        block: "{{ lookup('template', 'target-conf-template.j2') }}"
