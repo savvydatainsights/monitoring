@@ -6,7 +6,7 @@ services:
   - docker
 
 install:
-  - apt-get install -y apache2-utils
+  - sudo apt-get install -y apache2-utils
 
 script:
   - htpasswd -c -i -b auth.htpasswd prometheus $CADVISOR_PASSWORD
