@@ -1,0 +1,14 @@
+sudo: required
+
+language: minimal
+
+services:
+  - docker
+
+script:
+  - htpasswd -c -i -b auth.htpasswd prometheus $CADVISOR_PASSWORD
+  - docker build -t dev.savvydatainsights.co.uk/savvy/cadvisor .
+
+after_success:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD dev.savvydatainsights.co.uk
+  - docker push dev.savvydatainsights.co.uk/savvy/cadvisor
