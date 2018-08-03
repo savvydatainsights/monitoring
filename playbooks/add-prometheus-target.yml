@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    - prom_conf_file: "{{ prom_conf_file_arg | default('prometheus.yml' | realpath) }}"
+  tasks:
+    - name: Check if the Prometheus configuration file exists
+      stat:
+        path: "{{ prom_conf_file }}"
+      register: prom_conf_file_check
+    - name: Assert that the Prometheus configuration file exists
+      assert:
+        that: prom_conf_file_check.stat.exists and prom_conf_file_check.stat.isreg
+        msg: "Invalid Prometheus configuration file."
