@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_prompt:
+    - name: "basic_auth_passwd"
+      prompt: "Password for getting metrics"
+      private: yes
+      confirm: yes
+  tasks:
+    - name: Assert that password was set
+      assert:
+        that: basic_auth_passwd != ''
+        msg: "The password is required."
+    - name: Install required Python packages
+      pip:
+        name: "{{item}}"
+      loop:
+        - passlib
+        - docker
+        - docker-compose
+    - name: Create the file required for defining the basic authentication in the custom cAdvisor Docker image
+      htpasswd:
+        path: auth.htpasswd
+        name: prometheus
+        password: "{{basic_auth_passwd}}"
+    - name: Build the custom cAdvisor Docker image
+      docker_image:
+        path: ./
+        name: dev.savvydatainsights.co.uk/savvy/cadvisor
+    - name: Put in a file called *basic_auth_password* the same password used previously
+      copy:
+        content: "{{basic_auth_passwd}}"
+        dest: basic_auth_password
+    - name: Set the monitoring environment up
+      docker_service:
+        project_name: monitoring
+        project_src: .
