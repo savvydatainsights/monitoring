@@ -28,16 +28,13 @@ scrape_configs:
     static_configs:
     - targets: ['localhost:9090']
 
-# BEGIN localhost configuration
-  - job_name: 'localhost'
+  - job_name: 'cadvisors'
 
-    # metrics_path defaults to '/metrics'
-    # scheme defaults to 'http'.
-
-    static_configs:
-    - targets: ['cadvisor:8080']
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/tg_*.yml
+        refresh_interval: 1m
 
     basic_auth:
       username: prometheus
       password_file: /etc/prometheus/basic_auth_password
-# END localhost configuration

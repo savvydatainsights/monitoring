@@ -31,7 +31,7 @@
     - name: Put in a file called *basic_auth_password* the same password used previously
       copy:
         content: "{{basic_auth_passwd}}"
-        dest: basic_auth_password
+        dest: prometheus/basic_auth_password
     - name: Set the monitoring environment up
       docker_service:
         project_name: monitoring
