@@ -17,3 +17,11 @@ In order to set the monitoring environment up, follow the steps below:
 3. Finally, turn everything on through running: `docker-compose up -d`
 
 Alternativelly to manually following the mentioned steps, you can just execute `ansible-playbook playbooks/setup.yml`. You will be prompted to type the password, and then all the steps will be performed automatically.
+
+## Adding hosts
+
+By default, the localhost is automatically monitored. However, you can add other hosts where cAdvisor exposes containers' metrics, by adding more Prometheus targets. To add a host, execute:
+
+`ansible-playbook playbooks/add-cadvisor.yml -e "host=hostname target=ip:8080"`
+
+Replace *hostname* and *ip* with the appropriate values. If cAdvisor exposes the metrics through other port than 8080, change it too. Following the example, the metrics should be available by accessing http://ip:8080/metrics.
