@@ -29,3 +29,9 @@ Replace *hostname* and *ip* with the appropriate values. If cAdvisor exposes the
 ![Monitoring diagram](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/Monitoring.png)
 
 The diagram above shows you can add as many hosts as you want, each host with an instance of cAdvisor from where Prometheus scrapes metrics. The monitored host can have several running containers or just the cAdvisor one.
+
+## The dashboard
+
+The *Docker monitoring* dashboard is based on [this one](https://grafana.com/dashboards/193). Differently to the original, the dashboard data is filtered by host. By default, the localhost containers' metrics are shown, but you can switch to any other host you've added.
+
+![Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/Dashboard.png)
