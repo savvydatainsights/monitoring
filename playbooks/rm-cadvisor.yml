@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    - cadvisor_host: "{{ host | default('localhost') }}"
+  tasks:
+    - name: Remove the cAdvisor target file
+      file:
+        path: "../prometheus/tg_{{ cadvisor_host }}.yml"
+        state: absent

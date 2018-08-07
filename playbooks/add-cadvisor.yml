@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    - cadvisor_host: "{{ host | default('localhost') }}"
+    - cadvisor_target: "{{ target | default('cadvisor:8080') }}"
+  tasks:
+    - name: Add the cAdvisor target file
+      template:
+        src: templates/tg_cadvisor.j2
+        dest: "../prometheus/tg_{{ cadvisor_host }}.yml"
