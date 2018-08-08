@@ -1,7 +1,7 @@
 version: '3'
 services:
   cadvisor:
-    build: .
+    build: cadvisor
     image: dev.savvydatainsights.co.uk/savvy/cadvisor
     container_name: cadvisor
     restart: always

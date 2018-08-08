@@ -21,17 +21,17 @@
         - docker-compose
     - name: Create the file required for defining the basic authentication in the custom cAdvisor Docker image
       htpasswd:
-        path: auth.htpasswd
+        path: ../cadvisor/auth.htpasswd
         name: prometheus
-        password: "{{basic_auth_passwd}}"
+        password: "{{ basic_auth_passwd }}"
     - name: Build the custom cAdvisor Docker image
       docker_image:
-        path: ./
+        path: ../cadvisor
         name: dev.savvydatainsights.co.uk/savvy/cadvisor
-    - name: Put in a file called *basic_auth_password* the same password used previously
+    - name: Put in the file prometheus/basic_auth_password the same password used previously
       copy:
-        content: "{{basic_auth_passwd}}"
-        dest: prometheus/basic_auth_password
+        content: "{{ basic_auth_passwd }}"
+        dest: ../prometheus/basic_auth_password
     - name: Set the monitoring environment up
       docker_service:
         project_name: monitoring
