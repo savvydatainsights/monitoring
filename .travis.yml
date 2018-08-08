@@ -5,8 +5,8 @@ services:
 install:
 - sudo apt-get install -y apache2-utils
 script:
-- htpasswd -c -i -b auth.htpasswd prometheus $CADVISOR_PASSWORD
-- docker build -t dev.savvydatainsights.co.uk/savvy/cadvisor .
+- htpasswd -c -i -b cadvisor/auth.htpasswd prometheus $CADVISOR_PASSWORD
+- docker build -t dev.savvydatainsights.co.uk/savvy/cadvisor cadvisor
 after_success:
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD dev.savvydatainsights.co.uk
 - docker push dev.savvydatainsights.co.uk/savvy/cadvisor
