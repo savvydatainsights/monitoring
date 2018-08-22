@@ -1,5 +1,6 @@
 version: '3'
 services:
+
   cadvisor:
     build: cadvisor
     image: dev.savvydatainsights.co.uk/savvy/cadvisor
@@ -13,6 +14,7 @@ services:
       - /dev/disk/:/dev/disk:ro
     ports:
       - 8080:8080
+
   prometheus:
     image: quay.io/prometheus/prometheus:v2.3.2
     container_name: prometheus
@@ -27,10 +29,9 @@ services:
       - "--web.enable-lifecycle"
     ports:
       - 9090:9090
-    links:
-      - cadvisor:cadvisor
     depends_on:
       - cadvisor
+
   grafana:
     image: grafana/grafana:5.2.2
     container_name: grafana
@@ -41,9 +42,8 @@ services:
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
     ports:
       - 3000:3000
-    links:
-      - prometheus:prometheus
     depends_on:
       - prometheus
+
 volumes:
   grafana_data:
