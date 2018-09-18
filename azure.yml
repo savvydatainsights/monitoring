@@ -1,0 +1,84 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+  - name: Create the resource group
+    azure_rm_resourcegroup:
+      name: monitoring-rg
+      location: westeurope
+
+  - name: Create the virtual network
+    azure_rm_virtualnetwork:
+      resource_group: monitoring-rg
+      name: monitoring-vnet
+      address_prefixes_cidr:
+        - "10.0.0.0/16"
+
+  - name: Create the subnet
+    azure_rm_subnet:
+      resource_group: monitoring-rg
+      virtual_network_name: monitoring-vnet
+      name: default
+      address_prefix_cidr: "10.0.0.0/24"
+
+  - name: Create the public ip address
+    azure_rm_publicipaddress:
+      resource_group: monitoring-rg
+      name: monitoring-ip
+      allocation_method: Static
+      domain_name_label: savvy-monitoring
+
+  - name: Create the network security group
+    azure_rm_securitygroup:
+      resource_group: monitoring-rg
+      name: monitoring-nsg
+      rules:
+        - name: SSH
+          protocol: Tcp
+          destination_port_range: 22
+          access: Allow
+          priority: 1001
+          direction: Inbound
+        - name: Grafana
+          protocol: Tcp
+          destination_port_range: 3000
+          access: Allow
+          priority: 1002
+          direction: Inbound
+
+  - name: Create the virtual network interface card
+    azure_rm_networkinterface:
+      resource_group: monitoring-rg
+      name: monitoring-nic
+      virtual_network_name: monitoring-vnet
+      subnet_name: default
+      security_group_name: monitoring-nsg
+      ip_configurations:
+        - name: default
+          public_ip_address_name: monitoring-ip
+          primary: yes
+
+  - name: Create the storage account
+    azure_rm_storageaccount:
+      resource_group: monitoring-rg
+      name: savvymonitoringsa
+      type: Standard_LRS
+
+  - name: Create the Savvy Monitoring VM
+    azure_rm_virtualmachine:
+      resource_group: monitoring-rg
+      name: monitoring
+      admin_username: sdiadmin
+      ssh_password_enabled: false
+      ssh_public_keys:
+      - path: /home/sdiadmin/.ssh/authorized_keys
+        key_data: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfmGVUQImyNEbQnNwfGjLuhQYk6Hqom9r0sntcE4fStrTCMRN030Qt3m6R0H0ykEhONDQ0WnpXZSjPdSLxFi+IQVTeghRouRwE1joznBllBYbGP7ArWYjfHiXzhqE8zVDslpdq2Q6yu9OjVBnh0CdV8ynVuQjIkKZ/Ct1Zk9+vvgKbl/JuGt2yIna/q1XB7AC6DgJTv2gQ1CrUCHrPtAJSmzTzfhI9Y203FiO+iCXD2QwzkOrJHhqpJu5c3x6j67fmV46651XbW6o4iXwj96J6oDfGOZHChGbutmkC6asUZYtQhsld49ZV6EerB+SoMV6Z2BBhC+Ixkx97dE8Y2nDB
+      vm_size: Standard_B2ms
+      network_interfaces: monitoring-nic
+      storage_account_name: savvymonitoringsa
+      image:
+        name: myUbuntuImage
+        resource_group: myResourceGroup
