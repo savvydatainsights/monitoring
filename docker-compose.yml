@@ -2,8 +2,7 @@ version: '3'
 services:
 
   cadvisor:
-    build: cadvisor
-    image: dev.savvydatainsights.co.uk/savvy/cadvisor
+    image: google/cadvisor:v0.27.4
     container_name: cadvisor
     restart: always
     volumes:
