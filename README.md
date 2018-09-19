@@ -30,13 +30,17 @@ We have a *todo* task to contribute to the cAdvisor project with this feature. Y
 
 By default, the localhost is automatically monitored. However, you can add other hosts where cAdvisor exposes containers' metrics, by adding more Prometheus targets. To add a host, execute:
 
-`ansible-playbook playbooks/add-cadvisor.yml -e "host=hostname target=ip:8080"`
+`ansible-playbook playbooks/add-cadvisor.yml -e host=hostname -e target=ip:8080`
 
 Replace *hostname* and *ip* with the appropriate values. If cAdvisor exposes the metrics through other port than 8080, change it too. Following the example, the metrics should be available by accessing http://ip:8080/metrics.
 
+If your Prometheus host is a remote host, you must set the *prometheus_host* parameter, and a [inventory file](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html) with the SSH credentials required for Ansible connection:
+
+`ansible-playbook playbooks/add-cadvisor.yml -i inventory -e prometheus_host=remote -e host=hostname -e target=ip:8080`
+
 ![Monitoring diagram](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/Monitoring.png)
 
-The diagram above shows you can add as many hosts as you want, each host with an instance of cAdvisor from where Prometheus scrapes metrics. The monitored host can have several running containers or just the cAdvisor one.
+The diagram above shows you can add as many hosts as you want, each host with an instance of cAdvisor from where Prometheus scrapes metrics. The monitored host can have several running containers or just cAdvisor.
 
 ## The dashboard
 

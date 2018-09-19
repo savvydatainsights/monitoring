@@ -1,10 +1,11 @@
 ---
-- hosts: localhost
-  connection: local
+- hosts: "{{ prometheus_host | default('localhost') }}"
   gather_facts: no
+
   vars:
     - cadvisor_host: "{{ host | default('localhost') }}"
     - cadvisor_target: "{{ target | default('cadvisor:8080') }}"
+
   tasks:
     - name: Add the cAdvisor target file
       template:
