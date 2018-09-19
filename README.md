@@ -49,3 +49,9 @@ Grafana is available on port 3000. During its setup, the connection with Prometh
 The *Docker monitoring* dashboard is based on [this one](https://grafana.com/dashboards/193). Differently to the original, this dashboard data is filtered by host. By default, the localhost containers' metrics are shown, but you can switch to any other host you've added.
 
 ![Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/Dashboard.png)
+
+## Deploying to Azure
+
+With the Ansible playbook [azure.yml](azure.yml) is possible to deploy the monitoring solution to a VM in [Azure](https://azure.microsoft.com). The playbook creates all the required resources and then runs the services in the new remote VM, created from a [baked Ubuntu image](https://github.com/savvydatainsights/ubuntu). After the deployment, Grafana can be accessed through the port 3000.
+
+`ansible-playbook azure.yml -i hosts`
