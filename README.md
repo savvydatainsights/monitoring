@@ -24,7 +24,25 @@ The goal of building a custom cAdvisor image is bringing security to the data cA
 
 Unfortunatelly the */metrics* endpoint is not suitable for applying basic authentication yet. Regardless the use of basic authentication in Prometheus requests, this endpoint does not require authentication yet.
 
-We have a *todo* task to contribute to the cAdvisor project with this feature. You can follow the issue #1 to see what's going on :simple_smile:
+We have a *todo* task to contribute to the cAdvisor project with this feature. You can follow the issue [#1](https://github.com/savvydatainsights/monitoring/issues/1) to see what's going on :blush:
+
+## Putting cAdvisor behind NGINX
+
+An alternative of securing cAdvisor is using [NGINX](https://www.nginx.com) in front of it, as a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) and requiring basic authentication. It's a good idea if you already have NGINX in your server, as a proxy server to other services. You restrict all the requests to a single port (80), avoiding cAdvisor from exposing its default port 8080.
+
+The configuration below is an example of how you can configure NGINX. Use the same **auth.htpasswd** file generated during the setup process, described earlier.
+
+```nginx
+server {
+    listen 80 default_server;
+
+    location /metrics {
+        auth_basic "Restricted";
+        auth_basic_user_file /etc/nginx/cadvisor/auth.htpasswd;
+        proxy_pass http://localhost:8080/metrics;
+    }
+}
+```
 
 ## Adding hosts
 
