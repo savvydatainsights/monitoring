@@ -16,6 +16,18 @@ services:
     ports:
       - 8080:8080
 
+  node-exporter:
+    image: prom/node-exporter:v0.17.0
+    container_name: node-exporter
+    restart: always
+    volumes:
+      - /:/host:ro
+    command:
+      - "--path.rootfs=/host"
+      - "--web.telemetry-path=/node-metrics"
+    ports:
+      - 9100:9100
+
   prometheus:
     image: prom/prometheus:v2.5.0
     container_name: prometheus
@@ -32,6 +44,7 @@ services:
       - 9090:9090
     depends_on:
       - cadvisor
+      - node-exporter
 
   grafana:
     image: grafana/grafana:5.3.2

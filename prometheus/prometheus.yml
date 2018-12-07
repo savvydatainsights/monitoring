@@ -40,3 +40,16 @@ scrape_configs:
     basic_auth:
       username: prometheus
       password_file: /etc/prometheus/basic_auth_password
+
+  - job_name: 'nodes'
+
+    metrics_path: /node-metrics
+
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/tg_node_*.yml
+        refresh_interval: 1m
+
+    basic_auth:
+      username: prometheus
+      password_file: /etc/prometheus/basic_auth_password
