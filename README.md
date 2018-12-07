@@ -6,7 +6,8 @@ Project for developing the SDI monitoring solution, consisted basically in 3 com
 
 - [Prometheus](https://prometheus.io) - Monitoring system and time series database;
 - [Grafana](https://grafana.com) - The open platform for analytics and monitoring;
-- [cAvisor](https://github.com/google/cadvisor) - Analyzes resource usage and performance characteristics of running containers.
+- [cAvisor](https://github.com/google/cadvisor) - Analyzes resource usage and performance characteristics of running containers;
+- [node_exporter](https://github.com/prometheus/node_exporter) - Prometheus exporter for hardware and OS metrics exposed by *NIX kernels.
 
 > The project also has some useful [Ansible playbooks](playbooks). Install [Ansible](https://www.ansible.com) and use them.
 
