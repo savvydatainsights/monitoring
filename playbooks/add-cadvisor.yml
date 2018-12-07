@@ -10,4 +10,4 @@
     - name: Add the cAdvisor target file
       template:
         src: templates/tg_cadvisor.j2
-        dest: "../prometheus/tg_{{ cadvisor_host }}.yml"
+        dest: "../prometheus/tg_cadvisor_{{ cadvisor_host }}.yml"

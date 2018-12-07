@@ -8,5 +8,5 @@
   tasks:
     - name: Remove the cAdvisor target file
       file:
-        path: "../prometheus/tg_{{ cadvisor_host }}.yml"
+        path: "../prometheus/tg_cadvisor_{{ cadvisor_host }}.yml"
         state: absent

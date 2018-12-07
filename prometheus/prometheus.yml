@@ -34,7 +34,7 @@ scrape_configs:
 
     file_sd_configs:
       - files:
-        - /etc/prometheus/tg_*.yml
+        - /etc/prometheus/tg_cadvisor_*.yml
         refresh_interval: 1m
 
     basic_auth:
