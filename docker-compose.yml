@@ -11,6 +11,8 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
+    command:
+      - "--prometheus_endpoint=/docker-metrics"
     ports:
       - 8080:8080
 
