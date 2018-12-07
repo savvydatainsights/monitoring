@@ -1,4 +1,4 @@
-FROM google/cadvisor:v0.27.4
+FROM google/cadvisor:v0.32.0
 LABEL maintainer "Gustavo Muniz do Carmo <gmunizcarmo@aubay.com>"
 
 ADD auth.htpasswd /

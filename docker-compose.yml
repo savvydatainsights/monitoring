@@ -2,7 +2,7 @@ version: '3'
 services:
 
   cadvisor:
-    image: google/cadvisor:v0.27.4
+    image: google/cadvisor:v0.32.0
     container_name: cadvisor
     restart: always
     volumes:
@@ -15,7 +15,7 @@ services:
       - 8080:8080
 
   prometheus:
-    image: quay.io/prometheus/prometheus:v2.3.2
+    image: prom/prometheus:v2.5.0
     container_name: prometheus
     restart: always
     volumes:
@@ -32,7 +32,7 @@ services:
       - cadvisor
 
   grafana:
-    image: grafana/grafana:5.2.2
+    image: grafana/grafana:5.3.2
     container_name: grafana
     restart: always
     volumes:
