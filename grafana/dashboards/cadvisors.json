@@ -84,7 +84,7 @@
         "tableColumn": "",
         "targets": [
           {
-            "expr": "count(container_last_seen{image!=\"\",host=\"$host\"})",
+            "expr": "count(container_last_seen{image!=\"\",job=\"cadvisors\",host=\"$host\"})",
             "format": "time_series",
             "intervalFactor": 2,
             "legendFormat": "",
@@ -172,7 +172,7 @@
         "tableColumn": "",
         "targets": [
           {
-            "expr": "sum(container_memory_usage_bytes{image!=\"\",host=\"$host\"})/1024/1024",
+            "expr": "sum(container_memory_usage_bytes{image!=\"\",job=\"cadvisors\",host=\"$host\"})/1024/1024",
             "format": "time_series",
             "intervalFactor": 2,
             "legendFormat": "",
@@ -260,7 +260,7 @@
         "tableColumn": "",
         "targets": [
           {
-            "expr": "sum(rate(container_cpu_user_seconds_total{image!=\"\",host=\"$host\"}[5m]) * 100)",
+            "expr": "sum(rate(container_cpu_user_seconds_total{image!=\"\",job=\"cadvisors\",host=\"$host\"}[5m]) * 100)",
             "format": "time_series",
             "intervalFactor": 2,
             "legendFormat": "",
@@ -327,7 +327,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "rate(container_cpu_user_seconds_total{image!=\"\",host=\"$host\"}[5m]) * 100",
+            "expr": "rate(container_cpu_user_seconds_total{image!=\"\",job=\"cadvisors\",host=\"$host\"}[5m]) * 100",
             "format": "time_series",
             "intervalFactor": 2,
             "legendFormat": "{{name}}",
@@ -422,7 +422,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "container_memory_usage_bytes{image!=\"\",host=\"$host\"}",
+            "expr": "container_memory_usage_bytes{image!=\"\",job=\"cadvisors\",host=\"$host\"}",
             "format": "time_series",
             "hide": false,
             "intervalFactor": 2,
@@ -515,7 +515,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "irate(container_network_receive_bytes_total{image!=\"\",host=\"$host\"}[5m])",
+            "expr": "irate(container_network_receive_bytes_total{image!=\"\",job=\"cadvisors\",host=\"$host\"}[5m])",
             "format": "time_series",
             "intervalFactor": 2,
             "legendFormat": "{{name}}",
@@ -606,7 +606,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "irate(container_network_transmit_bytes_total{image!=\"\",host=\"$host\"}[5m])",
+            "expr": "irate(container_network_transmit_bytes_total{image!=\"\",job=\"cadvisors\",host=\"$host\"}[5m])",
             "format": "time_series",
             "intervalFactor": 2,
             "legendFormat": "{{name}}",
@@ -684,7 +684,7 @@
               "value": "localhost"
             }
           ],
-          "query": "label_values(host)",
+          "query": "label_values(container_last_seen{job=\"cadvisors\"}, host)",
           "refresh": 2,
           "regex": "",
           "sort": 5,
