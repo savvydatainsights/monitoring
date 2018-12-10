@@ -1,0 +1,12 @@
+---
+- hosts: "{{ prometheus_host | default('localhost') }}"
+  gather_facts: no
+
+  vars:
+    - _host: "{{ host | default('localhost') }}"
+
+  tasks:
+    - name: Remove the node-exporter target file
+      file:
+        path: "../prometheus/tg_node_{{ _host }}.yml"
+        state: absent
