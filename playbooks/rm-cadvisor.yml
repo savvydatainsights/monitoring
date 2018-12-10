@@ -3,10 +3,10 @@
   gather_facts: no
 
   vars:
-    - cadvisor_host: "{{ host | default('localhost') }}"
+    - _host: "{{ host | default('localhost') }}"
 
   tasks:
     - name: Remove the cAdvisor target file
       file:
-        path: "../prometheus/tg_cadvisor_{{ cadvisor_host }}.yml"
+        path: "../prometheus/tg_cadvisor_{{ _host }}.yml"
         state: absent

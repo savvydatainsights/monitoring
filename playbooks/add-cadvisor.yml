@@ -3,11 +3,11 @@
   gather_facts: no
 
   vars:
-    - cadvisor_host: "{{ host | default('localhost') }}"
-    - cadvisor_target: "{{ target | default('cadvisor:8080') }}"
+    - _host: "{{ host | default('localhost') }}"
+    - _target: "{{ target | default('cadvisor:8080') }}"
 
   tasks:
     - name: Add the cAdvisor target file
       template:
-        src: templates/tg_cadvisor.j2
-        dest: "../prometheus/tg_cadvisor_{{ cadvisor_host }}.yml"
+        src: templates/tg_.j2
+        dest: "../prometheus/tg_cadvisor_{{ _host }}.yml"
