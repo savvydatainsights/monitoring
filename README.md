@@ -9,16 +9,17 @@ Project for developing the SDI monitoring solution, consisted basically in 4 com
 - [cAvisor](https://github.com/google/cadvisor) - Analyzes resource usage and performance characteristics of running containers;
 - [node_exporter](https://github.com/prometheus/node_exporter) - Prometheus exporter for hardware and OS metrics exposed by *NIX kernels.
 
-> The project also has some useful [Ansible playbooks](playbooks). Install [Ansible](https://www.ansible.com) and use them.
-
 Table of Contents:
 
-    * [Setup](#setup)
-    * [Why a custom cAdvisor image?](#why-a-custom-cadvisor-image)
-    * [Putting cAdvisor/node-exporter behind NGINX](#putting-cadvisornode-exporter-behind-nginx)
-    * [Adding hosts](#adding-hosts)
-    * [The dashboards](#the-dashboards)
-    * [Deploying to Azure](#deploying-to-azure)
+   * [SDI Monitoring](#sdi-monitoring)
+      * [Setup](#setup)
+      * [Why a custom cAdvisor image?](#why-a-custom-cadvisor-image)
+      * [Putting cAdvisor/node-exporter behind NGINX](#putting-cadvisornode-exporter-behind-nginx)
+      * [Adding hosts](#adding-hosts)
+      * [The dashboards](#the-dashboards)
+      * [Deploying to Azure](#deploying-to-azure)
+
+> The project also has some useful [Ansible playbooks](playbooks). Install [Ansible](https://www.ansible.com) and use them.
 
 ## Setup
 
