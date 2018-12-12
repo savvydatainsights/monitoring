@@ -1,0 +1,32 @@
+---
+- hosts: "{{ target | default('localhost') }}"
+  gather_facts: no
+
+  tasks:
+    - name: Check if a docker-compose.yml file exists
+      stat:
+        path: docker-compose.yml
+      register: stat_result
+
+    - name: Teardown the Docker services
+      docker_service:
+        project_name: monitoring
+        project_src: .
+        state: absent
+      when: stat_result.stat.exists
+
+    - name: Copy required files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      loop:
+        - {src: "docker-compose.yml", dest: "."}
+        - {src: "grafana", dest: "."}
+        - {src: "prometheus", dest: "."}
+      when: inventory_hostname != "127.0.0.1"
+
+    - name: Set up the Docker services
+      docker_service:
+        project_name: monitoring
+        project_src: .
+        state: present
