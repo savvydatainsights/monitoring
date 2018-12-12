@@ -11,6 +11,15 @@ Project for developing the SDI monitoring solution, consisted basically in 4 com
 
 > The project also has some useful [Ansible playbooks](playbooks). Install [Ansible](https://www.ansible.com) and use them.
 
+Table of Contents:
+
+    * [Setup](#setup)
+    * [Why a custom cAdvisor image?](#why-a-custom-cadvisor-image)
+    * [Putting cAdvisor/node-exporter behind NGINX](#putting-cadvisornode-exporter-behind-nginx)
+    * [Adding hosts](#adding-hosts)
+    * [The dashboards](#the-dashboards)
+    * [Deploying to Azure](#deploying-to-azure)
+
 ## Setup
 
 In order to set the monitoring environment up, follow the steps below:
