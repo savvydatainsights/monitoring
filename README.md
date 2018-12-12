@@ -87,6 +87,6 @@ The *Host monitoring* dashboard is based on [this one](https://grafana.com/dashb
 
 ## Deploying to Azure
 
-With the Ansible playbook [azure.yml](azure.yml) is possible to deploy the monitoring solution to a VM in [Azure](https://azure.microsoft.com). The playbook creates all the required resources and then runs the services in the new remote VM, created from a [baked Ubuntu image](https://github.com/savvydatainsights/ubuntu). After the deployment, Grafana can be accessed through the port 3000.
+With the Ansible playbook [deploy-to-azure.yml](deploy-to-azure.yml) is possible to deploy the monitoring solution to a VM in [Azure](https://azure.microsoft.com). The playbook creates all the required resources and then runs the services in the new remote VM, created from a [baked Ubuntu image](https://github.com/savvydatainsights/ubuntu). After the deployment, Grafana can be accessed through the port 3000.
 
-`ansible-playbook azure.yml -i hosts`
+`ansible-playbook deploy-to-azure.yml -i hosts`
