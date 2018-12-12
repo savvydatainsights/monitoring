@@ -8,5 +8,5 @@
   tasks:
     - name: Remove the cAdvisor target file
       file:
-        path: "../prometheus/tg_cadvisor_{{ _host }}.yml"
+        path: "{{ '..' if inventory_hostname == '127.0.0.1' else '.' }}/prometheus/tg_cadvisor_{{ _host }}.yml"
         state: absent

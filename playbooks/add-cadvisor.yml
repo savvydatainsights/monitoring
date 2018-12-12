@@ -10,4 +10,4 @@
     - name: Add the cAdvisor target file
       template:
         src: templates/tg_.j2
-        dest: "../prometheus/tg_cadvisor_{{ _host }}.yml"
+        dest: "{{ '..' if inventory_hostname == '127.0.0.1' else '.' }}/prometheus/tg_cadvisor_{{ _host }}.yml"
