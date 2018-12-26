@@ -1,3 +1,6 @@
 auth.htpasswd
 basic_auth_password
 .vagrant
+*.retry
+env
+.vscode
