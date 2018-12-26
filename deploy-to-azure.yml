@@ -9,50 +9,31 @@
       name: monitoring-rg
       location: westeurope
 
-  - name: Create the virtual network
-    azure_rm_virtualnetwork:
-      resource_group: monitoring-rg
-      name: monitoring-vnet
-      address_prefixes_cidr:
-        - "10.0.0.0/16"
-
-  - name: Create the subnet
-    azure_rm_subnet:
-      resource_group: monitoring-rg
-      virtual_network_name: monitoring-vnet
-      name: default
-      address_prefix_cidr: "10.0.0.0/24"
-
   - name: Create the public ip address
     azure_rm_publicipaddress:
       resource_group: monitoring-rg
       name: monitoring-ip
       allocation_method: Static
-      domain_name_label: savvy-monitoring
 
   - name: Create the network security group
     azure_rm_securitygroup:
       resource_group: monitoring-rg
       name: monitoring-nsg
       rules:
-        - name: SSH
-          protocol: Tcp
-          destination_port_range: 22
-          access: Allow
-          priority: 1001
-          direction: Inbound
         - name: Grafana
           protocol: Tcp
           destination_port_range: 3000
           access: Allow
-          priority: 1002
+          priority: 1001
           direction: Inbound
 
   - name: Create the virtual network interface card
     azure_rm_networkinterface:
       resource_group: monitoring-rg
       name: monitoring-nic
-      virtual_network_name: monitoring-vnet
+      virtual_network:
+        resource_group: myResourceGroup
+        name: VNet1
       subnet_name: default
       security_group_name: monitoring-nsg
       ip_configurations:
@@ -86,10 +67,9 @@
   - name: Add the Savvy Monitoring VM to the ansible-playbook in-memory inventory
     add_host:
       groups: monitoring
-      hostname: "{{ azure_rm_virtualmachine_result.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+      hostname: "{{ azure_rm_virtualmachine_result.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.privateIPAddress }}"
       ansible_user: sdiadmin
       ansible_ssh_private_key_file: ~/.ssh/savvy_azure_key
-      ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
       ansible_python_interpreter: /usr/bin/python3
       
 - hosts: monitoring
