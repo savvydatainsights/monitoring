@@ -12,9 +12,18 @@ ansible_user=vagrant
 ansible_become=yes
 ansible_ssh_private_key_file=.vagrant/machines/default/virtualbox/private_key
 
+[production]
+100.0.0.4
+
+[production:vars]
+ansible_user=sdiadmin
+ansible_become=yes
+ansible_ssh_private_key_file=~/.ssh/savvy_azure_key
+
 [monitoring:children]
 localhost
 default
+production
 
 [monitoring:vars]
 ansible_python_interpreter=/usr/bin/python3

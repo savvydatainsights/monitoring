@@ -63,5 +63,21 @@ services:
     depends_on:
       - prometheus
 
+  nginx:
+    image: monitoring/nginx
+    build: nginx
+    container_name: nginx
+    restart: always
+    environment:
+      - CERTBOT_EMAIL=sysadmin@savvydatainsights.co.uk
+    volumes:
+      - nginx_letsencrypt:/etc/letsencrypt
+    ports:
+      - 80:80/tcp
+      - 443:443/tcp
+    depends_on:
+      - grafana
+
 volumes:
   grafana_data:
+  nginx_letsencrypt:

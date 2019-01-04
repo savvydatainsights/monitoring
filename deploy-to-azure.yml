@@ -20,11 +20,17 @@
       resource_group: monitoring-rg
       name: monitoring-nsg
       rules:
-        - name: Grafana
+        - name: HTTP
           protocol: Tcp
-          destination_port_range: 3000
+          destination_port_range: 80
           access: Allow
-          priority: 1001
+          priority: 100
+          direction: Inbound
+        - name: HTTPS
+          protocol: Tcp
+          destination_port_range: 443
+          access: Allow
+          priority: 110
           direction: Inbound
 
   - name: Create the virtual network interface card
@@ -84,6 +90,7 @@
       dest: "{{ item.dest }}"
     loop:
       - {src: "docker-compose.yml", dest: "."}
+      - {src: "nginx", dest: "."}
       - {src: "grafana", dest: "."}
       - {src: "prometheus", dest: "."}
 

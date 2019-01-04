@@ -21,6 +21,7 @@
         dest: "{{ item.dest }}"
       loop:
         - {src: "docker-compose.yml", dest: "."}
+        - {src: "nginx", dest: "."}
         - {src: "grafana", dest: "."}
         - {src: "prometheus", dest: "."}
       when: inventory_hostname != "127.0.0.1"
