@@ -70,6 +70,16 @@
         resource_group: myResourceGroup
     register: azure_rm_virtualmachine_result
   
+  - name: Create a DNS record for the Savvy Monitoring VM
+    azure_rm_dnsrecordset:
+      resource_group: myResourceGroup
+      relative_name: monitoring
+      zone_name: savvydatainsights.co.uk
+      record_type: A
+      state: present
+      records:
+        - entry: "{{ azure_rm_virtualmachine_result.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+
   - name: Add the Savvy Monitoring VM to the ansible-playbook in-memory inventory
     add_host:
       groups: monitoring
