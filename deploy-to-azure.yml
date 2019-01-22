@@ -75,6 +75,7 @@
       resource_group: myResourceGroup
       relative_name: monitoring
       zone_name: savvydatainsights.co.uk
+      time_to_live: 60
       record_type: A
       state: present
       records:
