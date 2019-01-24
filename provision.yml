@@ -54,6 +54,15 @@
           shell: ./acme.sh --install-cert -d {{ mon_domain }} --fullchain-file ../{{ cert_dir }}/fullchain.pem --key-file ../{{ cert_dir }}/privkey.pem
           args:
             chdir: .acme.sh
+        - name: Create a cron file
+          cron:
+            name: "renew certificate"
+            minute: 0
+            hour: 0
+            user: "{{ ansible_user }}"
+            job: "~/.acme.sh/acme.sh --cron > /dev/null"
+            cron_file: renew-certificate
+          become: true
       when: not privkey_path.stat.exists
 
     - name: Set up the Docker services
