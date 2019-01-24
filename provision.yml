@@ -1,0 +1,63 @@
+---
+- hosts: default
+  gather_facts: false
+
+  vars:
+    mon_domain: monitoring.savvydatainsights.co.uk
+    cert_dir: nginx/letsencrypt/{{ mon_domain }}
+
+  vars_files:
+    - azure_credentials.yml
+
+  tasks:
+    - name: Check if cname.sh is installed
+      stat:
+        path: .acme.sh
+      register: acme_path
+
+    - name: Install cname.sh
+      block:
+        - name: Clone cname.sh
+          git:
+            repo: https://github.com/Neilpang/acme.sh.git
+            dest: /tmp/acme.sh
+        - name: Install cname.sh
+          shell: ./acme.sh --install
+          args:
+            chdir: /tmp/acme.sh
+      when: not acme_path.stat.exists
+
+    - name: Copy required files
+      copy:
+        src: "{{ item }}"
+        dest: .
+      loop:
+        - docker-compose.yml
+        - nginx
+        - grafana
+        - prometheus
+
+    - name: Check if privkey.pem is generated
+      stat:
+        path: "{{ cert_dir }}/privkey.pem"
+      register: privkey_path
+
+    - name: Generate the certificate
+      block:
+        - name: Generate the certificate
+          shell: ./acme.sh --issue --dns dns_azure --dnssleep 10 --force -d {{ mon_domain }} --staging
+          args:
+            chdir: .acme.sh
+          environment: "{{ azure_credentials }}"
+        - name: Install the certificate
+          shell: ./acme.sh --install-cert -d {{ mon_domain }} --fullchain-file ../{{ cert_dir }}/fullchain.pem --key-file ../{{ cert_dir }}/privkey.pem
+          args:
+            chdir: .acme.sh
+      when: not privkey_path.stat.exists
+
+    - name: Set up the Docker services
+      docker_service:
+        project_name: monitoring
+        project_src: .
+        state: present
+      become: true
