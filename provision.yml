@@ -10,18 +10,19 @@
     - azure_credentials.yml
 
   tasks:
-    - name: Check if cname.sh is installed
+    - name: Check if acme.sh is installed
       stat:
         path: .acme.sh
       register: acme_path
 
-    - name: Install cname.sh
+    - name: Install acme.sh
       block:
-        - name: Clone cname.sh
+        - name: Clone acme.sh
           git:
             repo: https://github.com/Neilpang/acme.sh.git
             dest: /tmp/acme.sh
-        - name: Install cname.sh
+            version: 2.7.9
+        - name: Install acme.sh
           shell: ./acme.sh --install
           args:
             chdir: /tmp/acme.sh
