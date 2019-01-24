@@ -64,14 +64,12 @@ services:
       - prometheus
 
   nginx:
-    image: monitoring/nginx
-    build: nginx
+    image: nginx:1.15.8
     container_name: nginx
     restart: always
-    environment:
-      - CERTBOT_EMAIL=sysadmin@savvydatainsights.co.uk
     volumes:
-      - nginx_letsencrypt:/etc/letsencrypt
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/letsencrypt:/etc/letsencrypt/live
     ports:
       - 80:80/tcp
       - 443:443/tcp
@@ -80,4 +78,3 @@ services:
 
 volumes:
   grafana_data:
-  nginx_letsencrypt:
