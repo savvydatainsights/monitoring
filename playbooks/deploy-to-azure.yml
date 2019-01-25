@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-  gather_facts: no
+  gather_facts: false
 
   tasks:
 
@@ -45,7 +45,7 @@
       ip_configurations:
         - name: default
           public_ip_address_name: monitoring-ip
-          primary: yes
+          primary: true
 
   - name: Create the storage account
     azure_rm_storageaccount:
@@ -83,29 +83,11 @@
 
   - name: Add the Savvy Monitoring VM to the ansible-playbook in-memory inventory
     add_host:
-      groups: monitoring
+      groups: default
       hostname: "{{ azure_rm_virtualmachine_result.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.privateIPAddress }}"
       ansible_user: sdiadmin
       ansible_ssh_private_key_file: ~/.ssh/savvy_azure_key
       ansible_python_interpreter: /usr/bin/python3
+      staging: false
       
-- hosts: monitoring
-  gather_facts: no
-  become: yes
-
-  tasks:
-
-  - name: Copy required files
-    copy:
-      src: "{{ item.src }}"
-      dest: "{{ item.dest }}"
-    loop:
-      - {src: "docker-compose.yml", dest: "."}
-      - {src: "nginx", dest: "."}
-      - {src: "grafana", dest: "."}
-      - {src: "prometheus", dest: "."}
-
-  - name: Set up the Docker services
-    docker_service:
-      project_name: monitoring
-      project_src: .
+- import_playbook: provision.yml
