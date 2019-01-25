@@ -46,7 +46,7 @@
     - name: Generate the certificate
       block:
         - name: Generate the certificate
-          shell: ~/.acme.sh/acme.sh --issue --dns dns_azure --dnssleep 10 --force -d {{ mon_domain }} --staging
+          shell: ~/.acme.sh/acme.sh --issue --dns dns_azure --dnssleep 10 --force -d {{ mon_domain }} {{ '--staging' if staging | default('true') | bool }}
           environment: "{{ azure_credentials }}"
         - name: Install the certificate
           shell: ~/.acme.sh/acme.sh --install-cert -d {{ mon_domain }} --fullchain-file {{ cert_dir }}/fullchain.pem --key-file {{ cert_dir }}/privkey.pem
