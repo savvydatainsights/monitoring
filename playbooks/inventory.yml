@@ -1,11 +1,19 @@
 ---
-monitoring:
+all:
   hosts:
     localhost:
       ansible_connection: local
       ansible_python_interpreter: "{{ ansible_playbook_python }}"
-    production:
-      ansible_host: 100.0.0.4
-      ansible_user: sdiadmin
-      ansible_ssh_private_key_file: ~/.ssh/savvy_azure_key
-      ansible_python_interpreter: python3
+  children:
+    monitoring:
+      hosts:
+        default:
+          ansible_host: 192.168.33.10
+          ansible_user: vagrant
+          ansible_ssh_private_key_file: .vagrant/machines/default/virtualbox/private_key
+        production:
+          ansible_host: 100.0.0.4
+          ansible_user: sdiadmin
+          ansible_ssh_private_key_file: ~/.ssh/savvy_azure_key
+      vars:
+        ansible_python_interpreter: python3
