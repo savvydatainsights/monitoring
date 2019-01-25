@@ -12,7 +12,7 @@
   tasks:
     - name: Check if acme.sh is installed
       stat:
-        path: .acme.sh
+        path: ~/.acme.sh
       register: acme_path
 
     - name: Install acme.sh
@@ -30,7 +30,7 @@
 
     - name: Copy required files
       copy:
-        src: "{{ item }}"
+        src: "../{{ item }}"
         dest: .
       loop:
         - docker-compose.yml
@@ -46,14 +46,10 @@
     - name: Generate the certificate
       block:
         - name: Generate the certificate
-          shell: ./acme.sh --issue --dns dns_azure --dnssleep 10 --force -d {{ mon_domain }} --staging
-          args:
-            chdir: .acme.sh
+          shell: ~/.acme.sh/acme.sh --issue --dns dns_azure --dnssleep 10 --force -d {{ mon_domain }} --staging
           environment: "{{ azure_credentials }}"
         - name: Install the certificate
-          shell: ./acme.sh --install-cert -d {{ mon_domain }} --fullchain-file ../{{ cert_dir }}/fullchain.pem --key-file ../{{ cert_dir }}/privkey.pem
-          args:
-            chdir: .acme.sh
+          shell: ~/.acme.sh/acme.sh --install-cert -d {{ mon_domain }} --fullchain-file {{ cert_dir }}/fullchain.pem --key-file {{ cert_dir }}/privkey.pem
         - name: Create a cron file
           cron:
             name: "renew certificate"
