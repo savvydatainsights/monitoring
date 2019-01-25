@@ -1,5 +1,5 @@
 ---
-- hosts: default
+- hosts: "{{ target | default('default') }}"
   gather_facts: false
 
   vars:
