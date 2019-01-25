@@ -1,6 +1,7 @@
 auth.htpasswd
 basic_auth_password
 .vagrant
-*.retry
-env
 .vscode
+env
+playbooks/azure_credentials.yml
+playbooks/*.retry
