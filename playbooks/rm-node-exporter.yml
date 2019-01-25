@@ -8,5 +8,5 @@
   tasks:
     - name: Remove the node-exporter target file
       file:
-        path: "{{ '..' if inventory_hostname == '127.0.0.1' else '.' }}/prometheus/tg_node_{{ _host }}.yml"
+        path: "{{ '..' if inventory_hostname == 'localhost' else '.' }}/prometheus/tg_node_{{ _host }}.yml"
         state: absent
