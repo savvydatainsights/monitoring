@@ -32,6 +32,11 @@
         path: ~/.acme.sh
       register: acme_path
 
+    - name: Check if fullchain.pem is generated
+      stat:
+        path: "{{ cert_dir }}/fullchain.pem"
+      register: fullchain_path
+
     - name: Install acme.sh
       block:
         - name: Clone acme.sh
@@ -43,12 +48,7 @@
           shell: ./acme.sh --install
           args:
             chdir: /tmp/acme.sh
-      when: not acme_path.stat.exists
-
-    - name: Check if privkey.pem is generated
-      stat:
-        path: "{{ cert_dir }}/privkey.pem"
-      register: privkey_path
+      when: not acme_path.stat.exists and not fullchain_path.stat.exists
 
     - name: Generate the certificate
       block:
@@ -66,4 +66,4 @@
             job: "~/.acme.sh/acme.sh --cron > /dev/null"
             cron_file: renew-certificate
           become: true
-      when: not privkey_path.stat.exists
+      when: not fullchain_path.stat.exists
