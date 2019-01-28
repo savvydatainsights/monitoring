@@ -1,7 +1,15 @@
-auth.htpasswd
-basic_auth_password
+# directories
 .vagrant
 .vscode
 env
-playbooks/azure_credentials.yml
-playbooks/*.retry
+
+# basic auth related
+*.htpasswd
+basic_auth_password
+
+# certificate related
+*.pem
+
+# playbooks related
+azure_credentials.yml
+*.retry
