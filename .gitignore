@@ -8,6 +8,7 @@ env
 basic_auth_password
 
 # certificate related
+*.csr
 *.pem
 
 # playbooks related

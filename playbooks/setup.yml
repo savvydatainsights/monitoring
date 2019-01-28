@@ -2,6 +2,10 @@
 - hosts: localhost
   gather_facts: false
 
+  vars:
+    mon_domain: monitoring.savvydatainsights.co.uk
+    cert_dir: ../nginx/letsencrypt/{{ mon_domain }}
+
   vars_prompt:
     - name: basic_auth_passwd
       prompt: Password for getting metrics
@@ -9,35 +13,64 @@
       confirm: true
 
   tasks:
-    - name: Assert that password was set
-      assert:
-        that: basic_auth_passwd != ''
-        msg: The password is required.
-
     - name: Install required Python packages
       pip:
         name: "{{ item }}"
       loop:
         - passlib
+        - pyOpenSSL
         - docker
         - docker-compose
 
-    - name: Create the file required for implementing the cAdvisor metrics' basic authentication in NGINX
-      htpasswd:
-        path: ../nginx/basic_auth/cadvisor.htpasswd
-        name: prometheus
-        password: "{{ basic_auth_passwd }}"
+    - name: Check if basic_auth_password is generated
+      stat:
+        path: ../prometheus/basic_auth_password
+      register: basic_auth_password_path
 
-    - name: Use the same file for implementing the node-exporter metrics' basic authentication in NGINX
-      copy:
-        src: ../nginx/basic_auth/cadvisor.htpasswd
-        dest: ../nginx/basic_auth/node-exporter.htpasswd
-        remote_src: true
+    - name: Generate HTTP basic authentication files
+      block:
+        - name: Assert that password was set
+          assert:
+            that: basic_auth_passwd != ''
+            msg: The password is required.
+        - name: Create the file required for implementing the cAdvisor metrics' basic authentication in NGINX
+          htpasswd:
+            path: ../nginx/basic_auth/cadvisor.htpasswd
+            name: prometheus
+            password: "{{ basic_auth_passwd }}"
+        - name: Use the same file for implementing the node-exporter metrics' basic authentication in NGINX
+          copy:
+            src: ../nginx/basic_auth/cadvisor.htpasswd
+            dest: ../nginx/basic_auth/node-exporter.htpasswd
+            remote_src: true
+        - name: Put in the file prometheus/basic_auth_password the same password used previously
+          copy:
+            content: "{{ basic_auth_passwd }}"
+            dest: ../prometheus/basic_auth_password
+      when: not basic_auth_password_path.stat.exists
 
-    - name: Put in the file prometheus/basic_auth_password the same password used previously
-      copy:
-        content: "{{ basic_auth_passwd }}"
-        dest: ../prometheus/basic_auth_password
+    - name: Check if fullchain.pem is generated
+      stat:
+        path: "{{ cert_dir }}/fullchain.pem"
+      register: fullchain_path
+
+    - name: Generate domain certificate
+      block:
+        - name: Generate an OpenSSL private key
+          openssl_privatekey:
+            path: "{{ cert_dir }}/privkey.pem"
+        - name: Generate an OpenSSL CSR
+          openssl_csr:
+            path: "{{ cert_dir }}/{{ mon_domain }}.csr"
+            privatekey_path: "{{ cert_dir }}/privkey.pem"
+            common_name: "{{ mon_domain }}"
+        - name: Generate a Self Signed OpenSSL certificate
+          openssl_certificate:
+            path: "{{ cert_dir }}/fullchain.pem"
+            privatekey_path: "{{ cert_dir }}/privkey.pem"
+            csr_path: "{{ cert_dir }}/{{ mon_domain }}.csr"
+            provider: selfsigned
+      when: not fullchain_path.stat.exists
 
     - name: Set the monitoring environment up
       docker_service:
