@@ -1,11 +1,12 @@
 # SDI Monitoring
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build status](https://travis-ci.org/savvydatainsights/monitoring.svg?branch=master)](https://travis-ci.org/savvydatainsights/monitoring)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Project for developing the SDI monitoring solution, consisted basically in 4 components:
+Project for developing the SDI monitoring solution, consisted basically in 5 components:
 
-- [Prometheus](https://prometheus.io) - Monitoring system and time series database;
+- [NGINX](https://www.nginx.com) - For [reverse proxying](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy) and [access restriction through HTTP basic authentication](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication);
 - [Grafana](https://grafana.com) - The open platform for analytics and monitoring;
+- [Prometheus](https://prometheus.io) - Monitoring system and time series database;
 - [cAvisor](https://github.com/google/cadvisor) - Analyzes resource usage and performance characteristics of running containers;
 - [node_exporter](https://github.com/prometheus/node_exporter) - Prometheus exporter for hardware and OS metrics exposed by *NIX kernels.
 
@@ -13,37 +14,27 @@ Table of Contents:
 
 - [SDI Monitoring](#sdi-monitoring)
   - [Setup](#setup)
-  - [Why a custom cAdvisor image?](#why-a-custom-cadvisor-image)
   - [Putting cAdvisor/node-exporter behind NGINX](#putting-cadvisornode-exporter-behind-nginx)
   - [Adding hosts](#adding-hosts)
   - [The dashboards](#the-dashboards)
   - [Deploying to Azure](#deploying-to-azure)
 
-> The project also has some useful [Ansible playbooks](playbooks). Install [Ansible](https://www.ansible.com) and use them.
-
 ## Setup
 
 In order to set the monitoring environment up, follow the steps below:
 
-1. Create the file required for defining the basic authentication in the custom cAdvisor Docker image, by executing the command: `htpasswd -c cadvisor/auth.htpasswd prometheus`
-2. Put in the file *prometheus/basic_auth_password* the same password used previously. Prometheus will use this file to set the Authorization header during requests to cAdvisor/node-exporter.
-3. Finally, turn everything on through running: `docker-compose up -d`
+1. Create the file required for implementing the cAdvisor metrics' basic authentication in NGINX, by executing the command: `htpasswd -c nginx/basic_auth/cadvisor.htpasswd prometheus`;
+2. Copy the file to nginx/basic_auth/node-exporter.htpasswd, for implementing the node-exporter metrics' basic authentication in NGINX, or execute the command: `htpasswd -c nginx/basic_auth/node-exporter.htpasswd prometheus`;
+3. Put in the file *prometheus/basic_auth_password* the same password used previously. Prometheus will use this file to set the Authorization header during requests to cAdvisor/node-exporter. Note: If you use different passwords for basic authentication of different Prometheus exporters, you will have to put each one in a separate file and [configure Prometheus](prometheus/prometheus.yml) accordingly.
+4. Finally, turn everything on through running: `docker-compose up -d`
 
 Alternativelly to manually following the mentioned steps, you can just execute `ansible-playbook playbooks/setup.yml`. You will be prompted to type the password, and then all the steps will be performed automatically.
 
-## Why a custom cAdvisor image?
-
-The goal of building a custom cAdvisor image is bringing security to the data cAdvisor exposes. It's done by implementing **basic authentication** to the cAdvisor's Web application endpoints.
-
-Unfortunatelly the */metrics* endpoint is not suitable for applying basic authentication yet. Regardless the use of basic authentication in Prometheus requests, this endpoint does not require authentication yet.
-
-We have a *todo* task to contribute to the cAdvisor project with this feature. You can follow the issue [#1](https://github.com/savvydatainsights/monitoring/issues/1) to see what's going on :blush:
-
 ## Putting cAdvisor/node-exporter behind NGINX
 
-cAdvisor and node-exporter can have [NGINX](https://www.nginx.com) in front of them, as a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) and requiring basic authentication. It's a good idea if you already have NGINX in your server, as a proxy server to other services. You restrict all the requests to a single port (80), avoiding cAdvisor from exposing its default port 8080 as well as preventing node-exporter from exposing its default port 9100.
+In our solution, cAdvisor and node-exporter have [NGINX](https://www.nginx.com) in front of them, as a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) and requiring [basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). It's a good idea if you already have NGINX in your server, as a proxy server to other services. You restrict all the requests to a single port (80), avoiding cAdvisor from exposing its default port 8080 as well as preventing node-exporter from exposing its default port 9100.
 
-The configuration below is an example of how you can configure NGINX. Use the same **auth.htpasswd** file generated during the setup process, described earlier. If you prefer, create a specific file for node-exporter, using [htpasswd](https://httpd.apache.org/docs/2.4/programs/htpasswd.html).
+The configuration below is an example of how you can configure NGINX. Use the same *htpasswd* file generated during the setup process, described earlier, for each Prometheus exporter. If you prefer, create specific files for different exporters, using [htpasswd](https://httpd.apache.org/docs/2.4/programs/htpasswd.html). Note: Bear in mind you will have to [configure Prometheus](prometheus/prometheus.yml) appropriately if you use either a different user than *prometheus* or different passwords for different exporters.
 
 ```nginx
 server {
@@ -51,13 +42,13 @@ server {
 
     location /docker-metrics {
         auth_basic "Restricted";
-        auth_basic_user_file /etc/nginx/cadvisor/auth.htpasswd;
+        auth_basic_user_file /etc/nginx/basic_auth/cadvisor.htpasswd;
         proxy_pass http://localhost:8080/metrics;
     }
 
     location /node-metrics {
         auth_basic "Restricted";
-        auth_basic_user_file /etc/nginx/node-exporter/auth.htpasswd;
+        auth_basic_user_file /etc/nginx/basic_auth/node-exporter.htpasswd;
         proxy_pass http://localhost:9100/metrics;
     }
 }

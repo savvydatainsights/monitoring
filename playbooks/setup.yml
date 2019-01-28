@@ -3,8 +3,8 @@
   gather_facts: false
 
   vars_prompt:
-    - name: "basic_auth_passwd"
-      prompt: "Password for getting metrics"
+    - name: basic_auth_passwd
+      prompt: Password for getting metrics
       private: true
       confirm: true
 
@@ -12,7 +12,7 @@
     - name: Assert that password was set
       assert:
         that: basic_auth_passwd != ''
-        msg: "The password is required."
+        msg: The password is required.
 
     - name: Install required Python packages
       pip:
@@ -22,16 +22,17 @@
         - docker
         - docker-compose
 
-    - name: Create the file required for defining the basic authentication in the custom cAdvisor Docker image
+    - name: Create the file required for implementing the cAdvisor metrics' basic authentication in NGINX
       htpasswd:
-        path: ../cadvisor/auth.htpasswd
+        path: ../nginx/basic_auth/cadvisor.htpasswd
         name: prometheus
         password: "{{ basic_auth_passwd }}"
 
-    - name: Build the custom cAdvisor Docker image
-      docker_image:
-        path: ../cadvisor
-        name: dev.savvydatainsights.co.uk/savvy/cadvisor
+    - name: Use the same file for implementing the node-exporter metrics' basic authentication in NGINX
+      copy:
+        src: ../nginx/basic_auth/cadvisor.htpasswd
+        dest: ../nginx/basic_auth/node-exporter.htpasswd
+        remote_src: true
 
     - name: Put in the file prometheus/basic_auth_password the same password used previously
       copy:

@@ -13,8 +13,6 @@ services:
       - /dev/disk/:/dev/disk:ro
     command:
       - --prometheus_endpoint=/docker-metrics
-    ports:
-      - 8080:8080
 
   node-exporter:
     image: prom/node-exporter:v0.17.0
@@ -29,8 +27,6 @@ services:
       - --path.procfs=/host/proc
       - --path.sysfs=/host/sys
       - --collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)
-    ports:
-      - 9100:9100
 
   prometheus:
     image: prom/prometheus:v2.5.0
@@ -69,6 +65,7 @@ services:
     restart: always
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/basic_auth:/etc/nginx/basic_auth
       - ./nginx/letsencrypt:/etc/letsencrypt/live
     ports:
       - 80:80/tcp
