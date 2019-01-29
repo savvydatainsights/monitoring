@@ -6,9 +6,6 @@
     mon_domain: monitoring.savvydatainsights.co.uk
     cert_dir: nginx/letsencrypt/{{ mon_domain }}
 
-  vars_files:
-    - azure_credentials.yml
-
   tasks:
     - name: Copy required files
       copy:
@@ -52,6 +49,19 @@
 
     - name: Generate the certificate
       block:
+        - name: Check for azure_credentials.yml
+          stat:
+            path: "{{ playbook_dir }}/azure_credentials.yml"
+          register: azure_credentials_path
+          delegate_to: localhost
+        - name: Assert that azure_credentials.yml exists
+          assert:
+            that: azure_credentials_path.stat.exists
+            msg: "The file azure_credentials.yml is required, with the following environment variables set: AZUREDNS_SUBSCRIPTIONID, AZUREDNS_TENANTID, AZUREDNS_APPID and AZUREDNS_CLIENTSECRET."
+        - name: Get the Azure credentials' environment variables
+          include_vars:
+            file: azure_credentials.yml
+            name: azure_credentials
         - name: Generate the certificate
           shell: ~/.acme.sh/acme.sh --issue --dns dns_azure --dnssleep 10 --force -d {{ mon_domain }} {{ '--staging' if staging | default('true') | bool else '' }}
           environment: "{{ azure_credentials }}"
