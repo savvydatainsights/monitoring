@@ -1,0 +1,7 @@
+---
+- name: Remove the exporter target file
+  file:
+    path: "{{ prometheus_dir }}/tg_{{ exporter }}_{{ host | mandatory }}.yml"
+    state: absent
+  vars:
+    prometheus_dir: "{{ '..' if inventory_hostname == 'localhost' else '.' }}/prometheus"

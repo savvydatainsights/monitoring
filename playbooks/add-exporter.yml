@@ -1,0 +1,7 @@
+---
+- name: Add the exporter target file
+  template:
+    src: templates/tg_.j2
+    dest: "{{ prometheus_dir }}/tg_{{ exporter }}_{{ host | mandatory }}.yml"
+  vars:
+    prometheus_dir: "{{ '..' if inventory_hostname == 'localhost' else '.' }}/prometheus"

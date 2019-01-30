@@ -1,5 +1,5 @@
 ---
 - targets:
-  - {{ _target }}
+  - {{ target | mandatory }}
   labels:
-    host: {{ _host }}
+    host: {{ host | mandatory }}
