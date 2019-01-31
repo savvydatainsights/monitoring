@@ -2,13 +2,15 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Project for developing the SDI monitoring solution, consisted basically in 5 components:
+Project for developing the SDI monitoring solution, consisted basically with the following components:
 
 - [NGINX](https://www.nginx.com) - For [reverse proxying](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy) and [access restriction through HTTP basic authentication](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication);
 - [Grafana](https://grafana.com) - The open platform for analytics and monitoring;
 - [Prometheus](https://prometheus.io) - Monitoring system and time series database;
-- [cAvisor](https://github.com/google/cadvisor) - Analyzes resource usage and performance characteristics of running containers;
-- [node_exporter](https://github.com/prometheus/node_exporter) - Prometheus exporter for hardware and OS metrics exposed by *NIX kernels.
+- [Prometheus exporters](https://prometheus.io/docs/instrumenting/exporters):
+  - [cAvisor](https://github.com/google/cadvisor) - Analyzes resource usage and performance characteristics of running containers;
+  - [node_exporter](https://github.com/prometheus/node_exporter) - Prometheus exporter for hardware and OS metrics exposed by *NIX kernels;
+  - [postgres_exporter](https://github.com/wrouesnel/postgres_exporter) - Prometheus exporter for PostgreSQL server metrics.
 
 Table of Contents:
 
