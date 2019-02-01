@@ -19,5 +19,8 @@ Vagrant.configure("2") do |config|
     ansible.host_vars = {
       "default" => {"ansible_python_interpreter" => "/usr/bin/python3"}
     }
+    ansible.extra_vars = {
+      self_signed_cert: true
+    }
   end
 end

@@ -5,6 +5,7 @@
   vars:
     mon_domain: monitoring.savvydatainsights.co.uk
     cert_dir: nginx/letsencrypt/{{ mon_domain }}
+    use_openssl: self_signed_cert | default('false') | bool
 
   tasks:
     - name: Copy required files
@@ -45,13 +46,13 @@
           shell: ./acme.sh --install
           args:
             chdir: /tmp/acme.sh
-      when: not acme_path.stat.exists and not fullchain_path.stat.exists
+      when: not use_openssl and not acme_path.stat.exists and not fullchain_path.stat.exists
 
-    - name: Generate the certificate
+    - name: Generate the certificate through acme.sh
       block:
         - name: Check for azure_credentials.yml
           stat:
-            path: "{{ playbook_dir }}/azure_credentials.yml"
+            path: azure_credentials.yml
           register: azure_credentials_path
           delegate_to: localhost
         - name: Assert that azure_credentials.yml exists
@@ -76,4 +77,31 @@
             job: "~/.acme.sh/acme.sh --cron > /dev/null"
             cron_file: renew-certificate
           become: true
-      when: not fullchain_path.stat.exists
+      when: not use_openssl and not fullchain_path.stat.exists
+
+    - name: Generate the certificate through openssl (requires PyOpenSSL)
+      block:
+        - name: Generate an OpenSSL private key
+          openssl_privatekey:
+            path: "{{ cert_dir }}/privkey.pem"
+        - name: Generate an OpenSSL CSR
+          openssl_csr:
+            path: "{{ cert_dir }}/{{ mon_domain }}.csr"
+            privatekey_path: "{{ cert_dir }}/privkey.pem"
+            common_name: "{{ mon_domain }}"
+        - name: Generate a Self Signed OpenSSL certificate
+          openssl_certificate:
+            path: "{{ cert_dir }}/fullchain.pem"
+            privatekey_path: "{{ cert_dir }}/privkey.pem"
+            csr_path: "{{ cert_dir }}/{{ mon_domain }}.csr"
+            provider: selfsigned
+        - name: Restart NGINX
+          docker_service:
+            project_name: monitoring
+            project_src: .
+            state: present
+            restarted: yes
+            services:
+              - nginx
+          become: true
+      when: use_openssl and not fullchain_path.stat.exists
