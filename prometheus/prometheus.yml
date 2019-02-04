@@ -66,3 +66,21 @@ scrape_configs:
     basic_auth:
       username: prometheus
       password_file: /etc/prometheus/basic_auth_password
+
+  - job_name: 'jvms'
+
+    honor_labels: true
+    metrics_path: /jvms-metrics
+
+    params:
+      'match[]':
+        - '{job="jmx_exporter"}'
+
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/tg_jvms_*.yml
+        refresh_interval: 1m
+
+    basic_auth:
+      username: prometheus
+      password_file: /etc/prometheus/basic_auth_password
