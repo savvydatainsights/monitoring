@@ -471,7 +471,7 @@
             }
         }
     ],
-    "refresh": "30s",
+    "refresh": "10s",
     "schemaVersion": 16,
     "style": "dark",
     "tags": [
@@ -482,20 +482,16 @@
         "list": [
             {
                 "allValue": null,
-                "current": {
-                    "selected": true,
-                    "text": "dev1",
-                    "value": "dev1"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
-                "includeAll": false,
+                "includeAll": true,
                 "label": null,
                 "multi": false,
                 "name": "host",
                 "options": [],
                 "query": "label_values(jmx_exporter_build_info{job=\"jmx_exporter\"}, host)",
-                "refresh": 2,
+                "refresh": 1,
                 "regex": "",
                 "skipUrlSync": false,
                 "sort": 0,
@@ -507,11 +503,7 @@
             },
             {
                 "allValue": "",
-                "current": {
-                    "selected": true,
-                    "text": "All",
-                    "value": "$__all"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": true,
@@ -520,7 +512,7 @@
                 "name": "jvm",
                 "options": [],
                 "query": "label_values(jmx_exporter_build_info{job=\"jmx_exporter\", host=~\"$host\"}, jvm)",
-                "refresh": 2,
+                "refresh": 1,
                 "regex": "",
                 "skipUrlSync": false,
                 "sort": 0,
@@ -533,7 +525,7 @@
         ]
     },
     "time": {
-        "from": "now-30m",
+        "from": "now-3h",
         "to": "now"
     },
     "timepicker": {
@@ -561,8 +553,7 @@
             "30d"
         ]
     },
-    "timezone": "",
+    "timezone": "browser",
     "title": "JVM Monitoring",
-    "uid": "ESK6T6lmk",
-    "version": 9
+    "version": 1
 }
