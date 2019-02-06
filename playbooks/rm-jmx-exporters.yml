@@ -1,0 +1,9 @@
+---
+- hosts: "{{ prometheus_host | default('localhost') }}"
+  gather_facts: false
+
+  tasks:
+    - name: Remove the Prometheus target that aggregates jmx_exporters metrics
+      include_tasks: rm-exporter.yml
+      vars:
+        exporter: jvms
