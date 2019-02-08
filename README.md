@@ -17,7 +17,7 @@ Table of Contents:
 
 - [SDI Monitoring](#sdi-monitoring)
   - [Setup](#setup)
-  - [Putting cAdvisor/node-exporter behind NGINX](#putting-cadvisornode-exporter-behind-nginx)
+  - [Putting the Prometheus exporters behind NGINX](#putting-the-prometheus-exporters-behind-nginx)
   - [Adding hosts](#adding-hosts)
   - [The dashboards](#the-dashboards)
   - [Deploying to Azure](#deploying-to-azure)
