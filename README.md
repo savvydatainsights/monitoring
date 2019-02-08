@@ -33,9 +33,9 @@ In order to set the monitoring environment up, follow the steps below:
 
 Alternativelly to manually following the mentioned steps, you can just execute `ansible-playbook playbooks/setup.yml`. You will be prompted to type the password, and then all the steps will be performed automatically.
 
-## Putting cAdvisor/node-exporter behind NGINX
+## Putting the Prometheus exporters behind NGINX
 
-In our solution, cAdvisor and node-exporter have [NGINX](https://www.nginx.com) in front of them, as a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) and requiring [basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). It's a good idea if you already have NGINX in your server, as a proxy server to other services. You restrict all the requests to a single port (80), avoiding cAdvisor from exposing its default port 8080 as well as preventing node-exporter from exposing its default port 9100.
+In our solution, Prometheus exporters have [NGINX](https://www.nginx.com) in front of them, as a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) and requiring [basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). It's a good idea if you already have NGINX in your server, as a proxy server to other services. You restrict all the requests to a single port (80), avoiding every exporter from exposing its default port.
 
 The configuration below is an example of how you can configure NGINX. Use the same *htpasswd* file generated during the setup process, described earlier, for each Prometheus exporter. If you prefer, create specific files for different exporters, using [htpasswd](https://httpd.apache.org/docs/2.4/programs/htpasswd.html). Note: Bear in mind you will have to [configure Prometheus](prometheus/prometheus.yml) appropriately if you use either a different user than *prometheus* or different passwords for different exporters.
 
@@ -53,6 +53,18 @@ server {
         auth_basic "Restricted";
         auth_basic_user_file /etc/nginx/basic_auth/node-exporter.htpasswd;
         proxy_pass http://localhost:9100/metrics;
+    }
+
+    location /postgres-metrics {
+        auth_basic "Restricted";
+        auth_basic_user_file /etc/nginx/basic_auth/postgres_exporter.htpasswd;
+        http://localhost:9187/metrics
+    }
+
+    location /jvms-metrics {
+        auth_basic "Restricted";
+        auth_basic_user_file /etc/nginx/basic_auth/jmx_exporters.htpasswd;
+        http://localhost:9090/federate
     }
 }
 ```
