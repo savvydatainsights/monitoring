@@ -10,7 +10,8 @@ Project for developing the SDI monitoring solution, consisted basically with the
 - [Prometheus exporters](https://prometheus.io/docs/instrumenting/exporters):
   - [cAvisor](https://github.com/google/cadvisor) - Analyzes resource usage and performance characteristics of running containers;
   - [node_exporter](https://github.com/prometheus/node_exporter) - Prometheus exporter for hardware and OS metrics exposed by *NIX kernels;
-  - [postgres_exporter](https://github.com/wrouesnel/postgres_exporter) - Prometheus exporter for PostgreSQL server metrics.
+  - [postgres_exporter](https://github.com/wrouesnel/postgres_exporter) - Prometheus exporter for PostgreSQL server metrics;
+  - [jmx_exporter](https://github.com/prometheus/jmx_exporter) - JMX to Prometheus exporter: a collector that can configurably scrape and expose mBeans of a JMX target.
 
 Table of Contents:
 
