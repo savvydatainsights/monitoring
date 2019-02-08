@@ -35,7 +35,7 @@ Alternativelly to manually following the mentioned steps, you can just execute `
 
 ## Putting the Prometheus exporters behind NGINX
 
-In our solution, Prometheus exporters have [NGINX](https://www.nginx.com) in front of them, as a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) and requiring [basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). It's a good idea if you already have NGINX in your server, as a proxy server to other services. You restrict all the requests to a single port (80), avoiding every exporter from exposing its default port.
+In our solution, all the Prometheus exporters have [NGINX](https://www.nginx.com) in front of them, as a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) and requiring [basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). It's a good idea if you already have NGINX in your server, as a proxy server to other services. You restrict all the requests to a single port (80), avoiding every exporter from exposing its default port.
 
 The configuration below is an example of how you can configure NGINX. Use the same *htpasswd* file generated during the setup process, described earlier, for each Prometheus exporter. If you prefer, create specific files for different exporters, using [htpasswd](https://httpd.apache.org/docs/2.4/programs/htpasswd.html). Note: Bear in mind you will have to [configure Prometheus](prometheus/prometheus.yml) appropriately if you use either a different user than *prometheus* or different passwords for different exporters.
 
