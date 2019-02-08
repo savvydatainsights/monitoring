@@ -4,8 +4,8 @@
 
   vars:
     mon_domain: monitoring.savvydatainsights.co.uk
-    cert_dir: nginx/letsencrypt/{{ mon_domain }}
-    use_openssl: self_signed_cert | default('false') | bool
+    cert_dir: "nginx/letsencrypt/{{ mon_domain }}"
+    use_openssl: "{{ self_signed_cert | default('false') | bool }}"
 
   tasks:
     - name: Copy required files
