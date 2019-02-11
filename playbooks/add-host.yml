@@ -9,7 +9,7 @@
         host: atr
       - name: node
         target: 10.0.0.4
-        host: atr 
+        host: atr
 
   tasks:
     - name: Add the exporter target files
