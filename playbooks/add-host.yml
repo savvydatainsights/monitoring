@@ -1,0 +1,21 @@
+---
+- hosts: "{{ prometheus_host | default('localhost') }}"
+  gather_facts: false
+
+  vars:
+    exporters:
+      - name: cadvisor
+        target: 10.0.0.4
+        host: atr
+      - name: node
+        target: 10.0.0.4
+        host: atr 
+
+  tasks:
+    - name: Add the exporter target files
+      include_tasks: add-exporter.yml
+      vars:
+        exporter: "{{ item.name }}"
+        target: "{{ item.target }}"
+        host: "{{ item.host }}"
+      loop: "{{ exporters }}"
