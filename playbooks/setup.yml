@@ -35,14 +35,9 @@
             msg: The password is required.
         - name: Create the file required for implementing the cAdvisor metrics' basic authentication in NGINX
           htpasswd:
-            path: ../nginx/basic_auth/cadvisor.htpasswd
+            path: ../nginx/basic_auth/.htpasswd
             name: prometheus
             password: "{{ basic_auth_passwd }}"
-        - name: Use the same file for implementing the node-exporter metrics' basic authentication in NGINX
-          copy:
-            src: ../nginx/basic_auth/cadvisor.htpasswd
-            dest: ../nginx/basic_auth/node-exporter.htpasswd
-            remote_src: true
         - name: Put in the file prometheus/basic_auth_password the same password used previously
           copy:
             content: "{{ basic_auth_passwd }}"
