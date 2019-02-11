@@ -93,3 +93,7 @@
   vars:
     target: azure-vm
     staging: false
+
+- import_playbook: add-host.yml
+  vars:
+    target: azure-vm
