@@ -96,4 +96,4 @@
 
 - import_playbook: add-host.yml
   vars:
-    target: azure-vm
+    prometheus_host: azure-vm
