@@ -62,7 +62,7 @@
       ssh_public_keys:
       - path: /home/sdiadmin/.ssh/authorized_keys
         key_data: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfmGVUQImyNEbQnNwfGjLuhQYk6Hqom9r0sntcE4fStrTCMRN030Qt3m6R0H0ykEhONDQ0WnpXZSjPdSLxFi+IQVTeghRouRwE1joznBllBYbGP7ArWYjfHiXzhqE8zVDslpdq2Q6yu9OjVBnh0CdV8ynVuQjIkKZ/Ct1Zk9+vvgKbl/JuGt2yIna/q1XB7AC6DgJTv2gQ1CrUCHrPtAJSmzTzfhI9Y203FiO+iCXD2QwzkOrJHhqpJu5c3x6j67fmV46651XbW6o4iXwj96J6oDfGOZHChGbutmkC6asUZYtQhsld49ZV6EerB+SoMV6Z2BBhC+Ixkx97dE8Y2nDB
-      vm_size: Standard_B2ms
+      vm_size: Standard_B2s
       network_interfaces: monitoring-nic
       storage_account_name: savvymonitoringsa
       image:
