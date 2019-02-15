@@ -10,6 +10,24 @@
       - name: node
         target: 10.0.0.4
         host: atr
+      - name: cadvisor
+        target: 100.0.2.4
+        host: dev1
+      - name: node
+        target: 100.0.2.4
+        host: dev1
+      - name: postgres
+        target: 100.0.2.4
+        host: dev1
+      - name: jvms
+        target: 100.0.2.4
+        host: dev1
+      - name: cadvisor
+        target: 100.0.3.4
+        host: public1
+      - name: node
+        target: 100.0.3.4
+        host: public1
 
   tasks:
     - name: Add the exporter target files
