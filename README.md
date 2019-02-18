@@ -88,15 +88,16 @@ The diagram above shows you can add as many hosts as you want, each host with on
 
 ## The dashboards
 
-Grafana is available on port 3000. During its setup, the connection with Prometheus is made, and a default dashboard is provisioned.
+Grafana is available on port 3000. During its setup, the connection with Prometheus is made, and [dashboards](grafana/dashboards) are provisioned. They are all based on [dashboards shared by the community](https://grafana.com/dashboards). The table below shows the dashboards our Grafana has by default:
 
-The *Docker monitoring* dashboard is based on [this one](https://grafana.com/dashboards/193). Differently to the original, this dashboard data is filtered by host. By default, the localhost containers' metrics are shown, but you can switch to any other host you've added.
+| Dashboard | Original id | Picture |
+| --- | --- | --- |
+| Docker monitoring | [193](https://grafana.com/dashboards/193) | ![Docker Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/docker-dashboard.png) |
+| Host monitoring | [6014](https://grafana.com/dashboards/6014) | ![Host Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/host-dashboard.png) |
+| Postgres monitoring | [455](https://grafana.com/dashboards/455) | ![Postgres Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/postgres-dashboard.png) |
+| JVM monitoring | [3066](https://grafana.com/dashboards/3066) | ![JVM Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/jvm-dashboard.png) |
 
-![Docker Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/docker-dashboard.png)
-
-The *Host monitoring* dashboard is based on [this one](https://grafana.com/dashboards/6014). Many thanks to the community for sharing excellent dasboards on <https://grafana.com/dashboards>!
-
-![Host Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/host-dashboard.png)
+The dashboards were slightly changed from its originals for enabling the alternation between hosts.
 
 ## Deploying to Azure
 
