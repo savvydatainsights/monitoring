@@ -92,10 +92,10 @@ Grafana is available on port 3000. During its setup, the connection with Prometh
 
 | Dashboard | Original id | Picture |
 | --- | --- | --- |
-| Docker monitoring | [193](https://grafana.com/dashboards/193) | ![Docker Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/docker-dashboard.png) |
-| Host monitoring | [6014](https://grafana.com/dashboards/6014) | ![Host Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/host-dashboard.png) |
-| Postgres monitoring | [455](https://grafana.com/dashboards/455) | ![Postgres Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/postgres-dashboard.png) |
-| JVM monitoring | [3066](https://grafana.com/dashboards/3066) | ![JVM Monitoring dashboard](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/jvm-dashboard.png) |
+| Docker monitoring | [193](https://grafana.com/dashboards/193) | ![Docker Monitoring dashboard](https://repo.savvydatainsights.co.uk/repository/savvy/files/docker-dashboard.png) |
+| Host monitoring | [6014](https://grafana.com/dashboards/6014) | ![Host Monitoring dashboard](https://repo.savvydatainsights.co.uk/repository/savvy/files/host-dashboard.png) |
+| Postgres monitoring | [455](https://grafana.com/dashboards/455) | ![Postgres Monitoring dashboard](https://repo.savvydatainsights.co.uk/repository/savvy/files/postgres-dashboard.png) |
+| JVM monitoring | [3066](https://grafana.com/dashboards/3066) | ![JVM Monitoring dashboard](https://repo.savvydatainsights.co.uk/repository/savvy/files/jvm-dashboard.png) |
 
 The dashboards were slightly changed from its originals for enabling the alternation between hosts.
 
