@@ -82,7 +82,7 @@ If your Prometheus server is in a remote host, you must set the *prometheus_host
 
 `ansible-playbook playbooks/add-cadvisor.yml -i playbooks/inventory -e prometheus_host=production -e host=hostname -e target=ip:8080`
 
-![Monitoring diagram](https://dev.savvydatainsights.co.uk/nexus/repository/savvy/files/sdi-monitoring.png)
+![Monitoring diagram](https://repo.savvydatainsights.co.uk/repository/savvy/files/sdi-monitoring.png)
 
 The diagram above shows you can add as many hosts as you want, each host with one or more instances of exporters from where Prometheus scrapes metrics.
 
