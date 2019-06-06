@@ -82,7 +82,7 @@ If your Prometheus server is in a remote host, you must set the *prometheus_host
 
 `ansible-playbook playbooks/add-cadvisor.yml -i playbooks/inventory -e prometheus_host=production -e host=hostname -e target=ip:8080`
 
-![Monitoring diagram](https://repo.savvydatainsights.co.uk/repository/savvy/files/sdi-monitoring.png)
+![Monitoring diagram](images/sdi-monitoring.png)
 
 The diagram above shows you can add as many hosts as you want, each host with one or more instances of exporters from where Prometheus scrapes metrics.
 
@@ -92,10 +92,10 @@ Grafana is available on port 3000. During its setup, the connection with Prometh
 
 | Dashboard | Original id | Picture |
 | --- | --- | --- |
-| Docker monitoring | [193](https://grafana.com/dashboards/193) | ![Docker Monitoring dashboard](https://repo.savvydatainsights.co.uk/repository/savvy/files/docker-dashboard.png) |
-| Host monitoring | [6014](https://grafana.com/dashboards/6014) | ![Host Monitoring dashboard](https://repo.savvydatainsights.co.uk/repository/savvy/files/host-dashboard.png) |
-| Postgres monitoring | [455](https://grafana.com/dashboards/455) | ![Postgres Monitoring dashboard](https://repo.savvydatainsights.co.uk/repository/savvy/files/postgres-dashboard.png) |
-| JVM monitoring | [3066](https://grafana.com/dashboards/3066) | ![JVM Monitoring dashboard](https://repo.savvydatainsights.co.uk/repository/savvy/files/jvm-dashboard.png) |
+| Docker monitoring | [193](https://grafana.com/dashboards/193) | ![Docker Monitoring dashboard](images/docker-dashboard.png) |
+| Host monitoring | [6014](https://grafana.com/dashboards/6014) | ![Host Monitoring dashboard](images/host-dashboard.png) |
+| Postgres monitoring | [455](https://grafana.com/dashboards/455) | ![Postgres Monitoring dashboard](images/postgres-dashboard.png) |
+| JVM monitoring | [3066](https://grafana.com/dashboards/3066) | ![JVM Monitoring dashboard](images/jvm-dashboard.png) |
 
 The dashboards were slightly changed from its originals for enabling the alternation between hosts.
 
